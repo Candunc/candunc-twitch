@@ -79,7 +79,7 @@ function getVOD(vod) --Maybe pass filename here?
 	file = io.open("toaria.txt","w")
 	file:write(output.aria)
 	file:close()
-	os.execute("aria2c -i toaria.txt ")
+	os.execute("aria2c --download-result=hide -i toaria.txt ")
 
 	--Although both are very similar in content, I'm not sure how to somehow combine them.
 	file = io.open("toffmpeg.txt","w")
@@ -87,9 +87,9 @@ function getVOD(vod) --Maybe pass filename here?
 	file:close()
 
 	--http://superuser.com/a/1162353/607043
-	os.execute("ffmpeg -f concat -i toffmpeg.txt -c copy all.ts")
-	os.execute("ffmpeg -i all.ts -acodec copy -vcodec copy all.mp4")
-	os.execute("rm *.ts")
+	os.execute("ffmpeg -hide_banner -f concat -i toffmpeg.txt -c copy all.ts")
+	os.execute("ffmpeg -hide_banner -i all.ts -acodec copy -vcodec copy all.mp4")
+	os.execute("rm *.ts toaria.txt toffmpeg.txt")
 end
 
 --Following functions are roughly tested, however none of the other bits of the program have been implemented.

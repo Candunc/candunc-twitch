@@ -12,5 +12,9 @@ Programs like [youtube-dl](https://github.com/rg3/youtube-dl/) have unsatisfacto
 | [Luasocket](http://w3.impa.br/~diego/software/luasocket/) | 3.0rc1-2 |
 | [Luasec](https://github.com/brunoos/luasec) | 0.6-1 |
 | [Luajson](https://github.com/harningt/luajson) | 1.3.3-1 |
+| ffmpeg | 3.2.2-1~bpo8+1 |
+| [aria2c](https://github.com/aria2/aria2) | 1.31.0† |
+
+†Note: The 1.18.8 version has been tested, however is not compatible as it is missing a recent [addition](https://github.com/aria2/aria2/issues/639).
 
 [Luarocks](https://luarocks.org/) is recommended but not required.
