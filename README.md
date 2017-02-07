@@ -1,8 +1,8 @@
-##candunc-twitch
+##twitch-dl
 
 In my ever increasing ~~need~~ want to cache videos on my local network rather than streaming them as per needed, I've made this.
 
-Programs like [youtube-dl](https://github.com/rg3/youtube-dl/) have unsatisfactory download speeds and fun names like [twitch-dl](https://github.com/timothyb89/twitch-dl) and are taken, so I went with a unique but unmemorable name. The hope of this program is to provide a faster download with parallel downloads through programs like [aria2](https://aria2.github.io/), while implementing features available in more mature, but slower programs.
+This was developed after trying out other command line programs such as [youtube-dl](https://github.com/rg3/youtube-dl/) and experiencing insanely slow speeds due to the concurrent downloads of twitch streams. Twitch streams and VODs are made up of many 1 MB ts files, and downloading recorded content (like a VOD) in parallel with programs like Aria2 allows for a much faster completion. This program will "borrow" some ideas from youtube-dl such as the [output template](https://github.com/rg3/youtube-dl#output-template).
 
 ###Requirements
 
