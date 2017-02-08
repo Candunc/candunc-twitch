@@ -8,7 +8,7 @@ ltn12  = require("ltn12")
 CLIENT_ID = "y7c66dozeuhufau5a1p3xs8n0axiok"
 
 --TODO: 
---	Break everything into nicely sorted functioins
+--	Break everything into nicely sorted functions
 --	Actually catch errors rather than assuming everything will be alright
 
 function wget(input)
@@ -45,12 +45,13 @@ end
 --Gets the m3u8 files for a specific vod.
 function getVOD(vod) --Maybe pass filename here?
 	local quality = 1 --Hardcoded for now; this picks source quality.
+--	local array = {"chunked",""}
 
 	-- Kinda odd how they do all this work to take output from one site and place it into another
 	-- I mean, I guess vods & usher aren't documented, so maybe there is stuff behind the scenes.
 	local auth = json.decode(wget("https://api.twitch.tv/api/vods/"..vod.."/access_token"))
 	local input = wget("https://usher.twitch.tv/vod/"..vod.."?nauthsig="..auth["sig"].."&nauth="..auth["token"].."&allow_source=true&player=twitchweb&allow_spectre=true&allow_audio_only=true")
-	
+
 	-- Although this part looks ugly, it creates a numbered array from 1-6, where:
 	-- 1 is highest (chunked) quality, 5 is lowest (mobile) quality, and 6 is audio only
 	local formats = {}
@@ -76,20 +77,14 @@ function getVOD(vod) --Maybe pass filename here?
 		end
 	end
 
-	file = io.open("toaria.txt","w")
-	file:write(output.aria)
-	file:close()
-	os.execute("aria2c --download-result=hide -i toaria.txt ")
-
-	--Although both are very similar in content, I'm not sure how to somehow combine them.
-	file = io.open("toffmpeg.txt","w")
-	file:write(output.ffmpeg)
-	file:close()
+	--Untested, but I believe this should avoid using files for input.
+	os.execute("echo \""..string.gsub(output.aria,"\"","\\\"").."\" | aria2c --download-result=hide -i -")
 
 	--http://superuser.com/a/1162353/607043
-	os.execute("ffmpeg -hide_banner -f concat -i toffmpeg.txt -c copy all.ts")
+	--https://ffmpeg.org/ffmpeg-protocols.html#toc-pipe
+	os.execute("echo \""..string.gsub(output.ffmpeg,"\"","\\\"").."\" | ffmpeg -hide_banner -f concat -i pipe:0 -c copy all.ts")
 	os.execute("ffmpeg -hide_banner -i all.ts -acodec copy -vcodec copy all.mp4")
-	os.execute("rm *.ts toaria.txt toffmpeg.txt")
+	os.execute("rm *.ts")
 end
 
 --Following functions are roughly tested, however none of the other bits of the program have been implemented.
